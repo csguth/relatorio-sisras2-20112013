@@ -1,0 +1,353 @@
+
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% MODELO DE RELATÓRIO PARA BOLSA DO PROJETO SISRAS2
+% Baseado no Abntex2
+% Por Chrystian de Sousa Guth (csguth <at> gmail <dot> com)
+% ------------------------------------------------------------------------ 
+% ------------------------------------------------------------------------
+
+\documentclass[
+	% -- opções da classe memoir --
+	12pt,				% tamanho da fonte
+	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	twoside,			% para impressão em verso e anverso. Oposto a oneside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	french,				% idioma adicional para hifenização
+	spanish,			% idioma adicional para hifenização
+	brazil,				% o último idioma é o principal do documento
+	]{abntex2}
+
+% ---
+% PACOTES
+% ---
+
+% ---
+% Pacotes fundamentais 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{listings}			% para inserir listagens
+% ---
+
+% ---
+% Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
+% ---
+\usepackage{lipsum}				% para geração de dummy text
+% ---
+
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+
+% ---
+% Customizacoes
+% ---
+\usepackage{sisras2}
+
+% --- 
+% CONFIGURAÇÕES DE PACOTES
+% --- 
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Relatório de Atividades de Bolsista SisRas2\\(Março de 2011 a Março de 2013)}
+\autor{Chrystian de Sousa Guth}
+\local{Florianópolis}
+\data{Janeiro de 2014}
+\instituicao{Universidade Federal de Santa Catarina}
+\tipotrabalho{Tese (Doutorado)}
+% O preambulo deve conter o tipo do trabalho, o objetivo, 
+% o nome da instituição e a área de concentração 
+\preambulo{}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{projeto de pesquisa}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ----
+% Início do documento
+% ----
+\begin{document}
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+% \pretextual
+
+% ---
+% Capa
+% ---
+\imprimircapa
+% ---
+
+% ---
+% Folha de rosto
+% ---
+%\imprimirfolhaderosto
+% ---
+
+% ---
+% NOTA DA ABNT NBR 15287:2011, p. 4:
+%  ``Se exigido pela entidade, apresentar os dados curriculares do autor em
+%     folha ou página distinta após a folha de rosto.''
+% ---
+
+% ---
+% inserir lista de ilustrações
+% ---
+%\pdfbookmark[0]{\listfigurename}{lof}
+%\listoffigures*
+%\cleardoublepage
+% ---
+
+% ---
+% inserir lista de tabelas
+% ---
+%\pdfbookmark[0]{\listtablename}{lot}
+%\listoftables*
+%\cleardoublepage
+% ---
+
+% ---
+% inserir lista de abreviaturas e siglas
+% ---
+%\begin{siglas}
+%  \item[ABNT] Associação Brasileira de Normas Técnicas
+%  \item[abnTeX] ABsurdas Normas para TeX
+%\end{siglas}
+% ---
+
+% ---
+% inserir lista de símbolos
+% ---
+%\begin{simbolos}
+%  \item[$ \Gamma $] Letra grega Gama
+%  \item[$ \Lambda $] Lambda
+%  \item[$ \zeta $] Letra grega minúscula zeta
+%  \item[$ \in $] Pertence
+%\end{simbolos}
+% ---
+
+% ---
+% inserir o sumario
+% ---
+%\pdfbookmark[0]{\contentsname}{toc}
+%\tableofcontents*
+%\cleardoublepage
+% ---
+
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+
+
+\chapter{Relatório de Atividades do Bolsista}
+% ----------------------------------------------------------
+% Identificação
+% ----------------------------------------------------------
+\section{Identificação}
+
+\begin{itemize}
+	\item \textbf{Nome:} Chrystian de Sousa Guth;
+	\item \textbf{Local de Trabalho:} Universidade Federal de Santa Catarina;
+	\item \textbf{Título do Plano de Trabalho:} Avaliação do Impacto do Atraso das Interconexões na Análise de \textit{Timing} no Contexto de uma Ferramenta de \textit{Gate Sizing};
+	\item \textbf{Tipo de Bolsa:} ITI-A;
+	\item \textbf{Número do Processo da Bolsa:} 180995/2011-1;
+	\item \textbf{Período:} Março de 2011 - Março de 2013;
+	\item \textbf{Orientador:} José Luís Almada Güntzel (INE/UFSC);
+	\item \textbf{Coordenador do Projeto:} Ricardo Augusto da Luz Reis (II/UFRGS).
+\end{itemize}
+
+% ----------------------------------------------------------
+% Resumo 
+% ----------------------------------------------------------
+\section{Resumo}
+Este documento relata as atividades realizadas pelo bolsista Chrystian de Sousa Guth no período de Março de 2011 a Março de 2013, no contexto de bolsa ITI-A associada ao ``Projeto SisRAS2 - Sistemas Computacionais com Capacidade de Confiabilidade, Disponibilidade e Utilidade (RAS) 2''.
+
+Conforme previsto no plano de trabalho da bolsa, entre Março de 2011 a Março de 2013 o bolsista realizou um estudo para compreensão das técnicas de análise de \textit{timing} estática (\textit{STA: Static Timing Analysis}) aplicadas no contexto de uma ferramenta de otimização para fluxo industrial. O bolsista também participou na publicação de três artigos na área de EDA (\textit{Electronic Design Automation}), sendo dois em 2012 e o último em 2013.
+
+\begin{center}
+\textit{\textbf{Palavras-chave:} automação de projeto eletrônico, biblioteca standard cell, análise de timing estática, complementary metal-oxide semiconductor, gate sizing.}
+\end{center}
+
+\section{Introdução}
+O mercado de dispositivos móveis pessoais (PMDs - personal mobile devices) está aumentando vertiginosamente nos últimos anos. A cada mês, são lançados PMDs mais sofisticados e com mais capacidade de processamento embarcado. Por outro lado, a tecnologia de baterias não está evoluindo na mesma proporção. Como resultado, as restrições de baixo consumo estão ficando cada vez mais severas no projeto de PMDs. Desta forma, os projetistas precisam assegurar que, mesmo realizando cada vez mais operações, o consumo de energia de um PMD será suficientemente pequeno para garantir seu funcionamento em bateria por um tempo razoável. Tal restrição impõe a necessidade de se utilizar técnicas de projeto para baixo consumo de energia. Inúmeras técnicas de projeto de baixo consumo já foram propostas e tem sido utilizadas na prática \cite{keating2007low}. Entretanto, o agravamento das restrições de consumo exige que a investigação sobre tal tópico seja continuada, uma vez que o baixo consumo torna o sistema embarcado mais eficiente e confiável.
+
+Nos últimos anos, algumas técnicas de projeto para baixo consumo de energia no nível lógico/transistor tornaram-se bastante populares. Entre estas pode-se citar multi-Vdd e multi-Vth \cite{medardoni2007power}. Porém, o uso de técnicas de baixo consumo que envolvam somente um nível de abstração já não é suficiente para se atingir a redução de consumo necessária nos projetos de sistemas integrados dos próximos anos. É necessário o uso harmonioso de técnicas em mais de um nível de abstração, incluindo necessariamente as técnicas no nível lógico/transistor supracitadas.
+
+Durante o período de vigência da bolsa, o bolsista auxiliou na implementação e avaliação de uma técnica de otimização de consumo de energia em nível de portas lógicas. Para tal, foi desenvolvida uma ferramenta de análise de \textit{timing} estática baseada na infraestrutura disponibilizada pela competição de \textit{gate sizing} de 2012 do ISPD \cite{ozdal2012ispd}. Ainda durante a vigência da bolsa, o aluno participou de três publicações importantes na área de otimização, elas serão mencionadas na Seção \ref{sec:publicacoes}.
+
+\section{Materiais e Métodos}
+
+Nas atividades realizadas foi disponibilizado para uso do bolsista um computador tipo PC com sistema operacional Linux e outros recursos disponíveis no Laboratório de Computação Embarcada (ECL) da UFSC \cite{ECL}, como impressora \textit{laser}, rede de dados etc. Além dos recursos materiais, também foi utilizada a ferramenta de EDA (\textit{Electronic Design Automation}) Synopsys \textregistered \textit{PrimeTime} \texttrademark \cite{PrimeTime12}, para validação da técnica de STA implementada.
+
+\section{Participação em Publicações}
+\label{sec:publicacoes}
+
+\cite{lascas2012}
+
+\cite{icecs2012}
+
+\cite{date2013}
+
+\section{Experimentos Desenvolvidos, Resultados e Discussões}
+
+\subsection{Definição do Modelo de Grafo do Circuito}
+Para que a análise de \textit{timing} seja realizada, é necessário primeiramente, definir um modelo de grafo para representar o circuito. O modelo de grafo escolhido representa os \textit{Timing Points} no conjunto de vértices e os \textit{Timing Arcs} e interconexões no conjunto das arestas (Figura \ref{fig:grafo_timing_points}). Também são criados vértices especiais, chamados \textit{fonte} e \textit{terminal}. Estes nodos são inseridos no início e no fim do grafo, para que o mesmo possua apenas um ponto de ``entrada'', e um ponto de ``saída''.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=\linewidth]{img/grafo_timing_points.pdf} 
+\caption{Grafo de \textit{timing} com representação dos \textit{timing points}, \textit{timing arcs} e interconexões.}
+\label{fig:grafo_timing_points}
+\end{center}
+\end{figure}
+
+
+\subsection{Cálculo do Atraso das Portas Lógicas}
+Nas bibliotecas \textit{standard cell} atuais, modelos de atrasos não-lineares\footnote{Conhecidos na indústria por \textit{NLDM} (\textit{Non-Linear Delay Model})} são fornecidos para os \textit{timing arcs} das células disponíveis. Esses modelos, que geralmente são obtidos através de simulações em nível elétrico, são armazenados na forma de \textit{lookup tables}, como a da Figura \ref{fig:lookup_table}. Uma \textit{lookup table} descreve o \textit{delay} ou o \textit{slew} de uma célula em função de dois fatores: o \textit{slew} na entrada do \textit{timing arc} (colunas), e a capacitância de saída (\textit{load}) (linhas).
+
+Utilizando a \textit{lookup table} da Figura \ref{fig:lookup_table} para estimar o \textit{delay} de um dos \textit{timing arcs} de uma célula \textit{CMOS} e supondo que o \textit{slew} na entrada deste \textit{timing arc} seja de $8.0$, e a capacitância vista na saída seja $0.1$, obtém-se que $delay = 3.49$, pois $3.49$ é o valor endereçado pelos índices da função (\textit{slew} e \textit{load}). Caso os valores de \textit{slew} ou \textit{load} não existam na tabela, uma interpolação linear é realizada. Da mesma forma, o cálculo do \textit{slew} do \textit{timing arc} é realizado com base na \textit{lookup table} específica para o \textit{slew}.
+
+\begin{figure}[ht]
+\lstset{basicstyle=\footnotesize}
+\begin{lstlisting}[frame=single]
+rise_delay (delay_table) {
+ load (0.0, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2) ;
+ input_slew (0.5, 3.0, 5.0, 8.0, 14.0, 20.0, 30.0, 50.0) ;
+ values (
+   1.17, 1.82, 2.26, 2.76, 3.48, 4.04, 4.82, 6.12,
+   1.69, 2.34, 2.86, 3.49, 4.41, 5.11, 6.06, 7.58,
+   2.21, 2.86, 3.38, 4.12, 5.22, 6.05, 7.16, 8.90,
+   3.25, 3.90, 4.42, 5.20, 6.60, 7.67, 9.08, 11.23,
+   5.33, 5.98, 6.50, 7.28, 8.84, 10.30, 12.24, 15.14,
+   9.50, 10.15, 10.67, 11.45, 13.01, 14.57, 17.15, 21.33,
+   17.83, 18.48, 19.00, 19.78, 21.34, 22.90, 25.50, 30.70
+  );
+}
+\end{lstlisting}
+\caption{Uma \textit{lookup table} para atraso de subida (\textit{rise delay}) de um arco de \textit{timing}. As linhas são endereçadas por \textit{load} (capacitância de saída da porta lógica) e as colunas por \textit{input slew} (\textit{slew} aplicado na entrada do \textit{timing arc}). Adaptada de \cite{Contest2013}.}
+\label{fig:lookup_table}
+\end{figure}
+
+\subsection{Algoritmo para o Cálculo do Atraso do Circuito (Análise de \textit{Timing})}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=\linewidth]{img/grafo_lista_nivel_logico.pdf} 
+\caption{Na lista ordenada, observando o elemento \textit{u1:o}, os elementos de menor ou de igual  nível lógico (\textit{fonte, inp1, inp2, f1:q, u1:a, u1:b, u2:a}) se encontram à esquerda, e os de maior ou igual (\textit{u2:o, f1:d, out, terminal}) se encontram à direita.}
+\label{fig:grafo_lista_nivel_logico}
+\end{center}
+\end{figure}
+
+O algoritmo de STA é baseado nas técnicas conhecidas como PERT/CPM \cite{BhaskerChadha09}. Para melhorar o desempenho da técnica, foram adotadas estruturas de dados mais otimizadas para armazenar o grafo: ao guardar os dados do grafo em listas ordenadas topologicamente (Figura \ref{fig:grafo_lista_nivel_logico}), o algoritmo passa a ser apenas uma varredura em cada item da lista, atualizando as informações temporais previamente calculadas. Assim, não é mais necessário o uso da fila da técnica PERT/CPM.
+
+\subsection{Validação e Resultados}
+
+
+
+% ---
+% Finaliza a parte no bookmark do PDF
+% para que se inicie o bookmark na raiz
+% e adiciona espaço de parte no Sumário
+% ---
+\phantompart
+
+% ---
+% Conclusão
+% ---
+\chapter*[Considerações finais]{Considerações finais}
+\addcontentsline{toc}{chapter}{Considerações finais}
+
+Durante o período de vigência da bolsa, o bolsista avaliou uma técnica de análise de \textit{timing} estática que considera os atrasos das interconexões e os efeito de degradação do \textit{slew} através destas. Para tal, o bolsista implementou uma ferramenta baseada na infraestrutura do ISPD de 2013 \cite{Contest2013} com os algoritmos para cálculos dos atrasos devidamente implementados. No fim da vigência da bolsa, foi também iniciada a incorporação do modelo de grafo e cálculos de atraso em uma técnica de otimização para fluxo industrial, conhecida como \textit{gate sizing}, porém com término previsto para metade do primeiro semestre de 2014.
+
+
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\bibliography{bolsa20112013}
+
+
+\end{document}
