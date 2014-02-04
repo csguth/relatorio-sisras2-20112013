@@ -260,33 +260,55 @@ Nas atividades realizadas foi disponibilizado para uso do bolsista um computador
 \section{Participação em Publicações}
 \label{sec:publicacoes}
 
-\cite{lascas2012}
+O bolsista auxiliou no desenvolvimento de três artigos, que serão mostrados a seguir:
 
-\cite{icecs2012}
+\subsection{\textit{Evaluating the impact of slew on delay and power of neighboring gates in discrete gate sizing}}
 
-\cite{date2013}
+Na publicação \cite{lascas2012}, foi avaliado o uso de cinco técnicas para propagar o impacto do \textit{slew} nos atrasos e potência das portas do circuito no problema de \textit{gate sizing}. Resultados experimentais mostraram que a estratégia que considera o impacto da troca de tamanho de uma porta lógica nos seus \textit{fanins} e três níveis de \textit{fanouts} obtém melhores estimativas de \textit{delay} e \textit{leakage power}, sem comprometer o tempo de execução. Em adição, esta estratégia também previne que violações de \textit{timing} sejam negligenciadas.
+
+
+\subsection{Lagrangian relaxation-based Discrete Gate Sizing for leakage power minimization}
+No trabalho \cite{icecs2012} foi proposta uma modificação na formulação do problema de relaxação lagrangeana apresentada em \cite{ozdal11} inserindo nas restrições, também, as restrições impostas nas bibliotecas \textit{standard-cell}, tais como a restrição de capacitância máxima e de \textit{slew} máximo.
+
+\subsection{Fast and efficient Lagrangian Relaxation-based Discrete Gate Sizing}
+\cite{date2013} apresenta além da nova formulação (com as restrições de \textit{slew} e capacitância), uma nova técnica para resolver o subproblema lagrangeano, juntamente com técnicas para consertar as possíveis violações de \textit{slew} e capacitância no decorrer da otimização. O trabalho se baseou nas regras e infraestrutura impostas na competição do ISPD 2012 \cite{ozdal2012ispd}, mostrando resultados superiores (na maioria) aos obtidos pelos vencedores da competição.
 
 \section{Experimentos Desenvolvidos, Resultados e Discussões}
 
-\subsection{Definição do Modelo de Grafo do Circuito}
-Para que a análise de \textit{timing} seja realizada, é necessário primeiramente, definir um modelo de grafo para representar o circuito. O modelo de grafo escolhido representa os \textit{Timing Points} no conjunto de vértices e os \textit{Timing Arcs} e interconexões no conjunto das arestas (Figura \ref{fig:grafo_timing_points}). Também são criados vértices especiais, chamados \textit{fonte} e \textit{terminal}. Estes nodos são inseridos no início e no fim do grafo, para que o mesmo possua apenas um ponto de ``entrada'', e um ponto de ``saída''.
+Nessa seção, serão apresentadas as informações relevantes sobre a ferramenta de análise de \textit{timing} desenvolvida durante a vigência da bolsa.
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=\linewidth]{img/grafo_timing_points.pdf} 
-\caption{Grafo de \textit{timing} com representação dos \textit{timing points}, \textit{timing arcs} e interconexões.}
-\label{fig:grafo_timing_points}
-\end{center}
+\subsection{Definição do Modelo de Grafo do Circuito}
+Para que a análise de \textit{timing} seja realizada, é necessário primeiramente, definir um modelo de grafo para representar o circuito. O modelo de grafo escolhido representa as portas lógicas no conjunto de vértices e as interconexões no conjunto das arestas (\autoref{fig:grafo_refinado}). Também são criados vértices especiais, chamados \textit{fonte} e \textit{terminal}. Estes nodos são inseridos no início e no fim do grafo, para que o mesmo possua apenas um ponto de ``entrada'', e um ponto de ``saída''.
+
+
+\begin{figure}[htb]
+\label{fig:circuito_e_grafo}
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		
+		\caption{\label{fig:exemplo_circuito_simple}Um exemplo de circuito combinacional.}
+		\includegraphics[width=\linewidth]{img/exemplo_circuito_simple.pdf}
+		\legend{Desenho produzido pelo autor, baseado no circuito \textit{simple}, presente no \textit{benchmark} do \textit{contest} do ISPD 2012 \cite{ozdal2012ispd}.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.49\textwidth}
+		
+		\caption{\label{fig:grafo_refinado}O grafo correspondente ao circuito apresentado na \autoref{fig:exemplo_circuito_simple}.}
+		\includegraphics[width=\linewidth]{img/grafo_refinado.pdf}
+		\legend{Desenho produzido pelo autor.}
+	\end{minipage}
 \end{figure}
 
 
-\subsection{Cálculo do Atraso das Portas Lógicas}
-Nas bibliotecas \textit{standard cell} atuais, modelos de atrasos não-lineares\footnote{Conhecidos na indústria por \textit{NLDM} (\textit{Non-Linear Delay Model})} são fornecidos para os \textit{timing arcs} das células disponíveis. Esses modelos, que geralmente são obtidos através de simulações em nível elétrico, são armazenados na forma de \textit{lookup tables}, como a da Figura \ref{fig:lookup_table}. Uma \textit{lookup table} descreve o \textit{delay} ou o \textit{slew} de uma célula em função de dois fatores: o \textit{slew} na entrada do \textit{timing arc} (colunas), e a capacitância de saída (\textit{load}) (linhas).
 
-Utilizando a \textit{lookup table} da Figura \ref{fig:lookup_table} para estimar o \textit{delay} de um dos \textit{timing arcs} de uma célula \textit{CMOS} e supondo que o \textit{slew} na entrada deste \textit{timing arc} seja de $8.0$, e a capacitância vista na saída seja $0.1$, obtém-se que $delay = 3.49$, pois $3.49$ é o valor endereçado pelos índices da função (\textit{slew} e \textit{load}). Caso os valores de \textit{slew} ou \textit{load} não existam na tabela, uma interpolação linear é realizada. Da mesma forma, o cálculo do \textit{slew} do \textit{timing arc} é realizado com base na \textit{lookup table} específica para o \textit{slew}.
+\subsection{Cálculo do Atraso das Portas Lógicas}
+Nas bibliotecas \textit{standard cell} atuais, modelos de atrasos não-lineares\footnote{Conhecidos na indústria por \textit{NLDM} (\textit{Non-Linear Delay Model})} são fornecidos para os \textit{timing arcs} das células disponíveis. Esses modelos, que geralmente são obtidos através de simulações em nível elétrico, são armazenados na forma de \textit{lookup tables}, como a da \autoref{fig:lookup_table}. Uma \textit{lookup table} descreve o \textit{delay} ou o \textit{slew} de uma célula em função de dois fatores: o \textit{slew} na entrada do \textit{timing arc} (colunas), e a capacitância de saída (\textit{load}) (linhas).
+
+Utilizando a \textit{lookup table} da \autoref{fig:lookup_table} para estimar o \textit{delay} de um dos \textit{timing arcs} de uma célula \textit{CMOS} e supondo que o \textit{slew} na entrada deste \textit{timing arc} seja de $8.0$, e a capacitância vista na saída seja $0.1$, obtém-se que $delay = 3.49$, pois $3.49$ é o valor endereçado pelos índices da função (\textit{slew} e \textit{load}). Caso os valores de \textit{slew} ou \textit{load} não existam na tabela, uma interpolação linear é realizada. Da mesma forma, o cálculo do \textit{slew} do \textit{timing arc} é realizado com base na \textit{lookup table} específica para o \textit{slew}.
 
 \begin{figure}[ht]
 \lstset{basicstyle=\footnotesize}
+\caption{\label{fig:lookup_table}Uma \textit{lookup table} para atraso de subida (\textit{rise delay}) de um arco de \textit{timing}. As linhas são endereçadas por \textit{load} (capacitância de saída da porta lógica) e as colunas por \textit{input slew} (\textit{slew} aplicado na entrada do \textit{timing arc}).}
 \begin{lstlisting}[frame=single]
 rise_delay (delay_table) {
  load (0.0, 0.1, 0.2, 0.4, 0.8, 1.6, 3.2) ;
@@ -302,25 +324,24 @@ rise_delay (delay_table) {
   );
 }
 \end{lstlisting}
-\caption{Uma \textit{lookup table} para atraso de subida (\textit{rise delay}) de um arco de \textit{timing}. As linhas são endereçadas por \textit{load} (capacitância de saída da porta lógica) e as colunas por \textit{input slew} (\textit{slew} aplicado na entrada do \textit{timing arc}). Adaptada de \cite{Contest2013}.}
-\label{fig:lookup_table}
+\legend{Adaptada de uma biblioteca \textit{standard-cell} \cite{Contest2013}.}
+
 \end{figure}
 
 \subsection{Algoritmo para o Cálculo do Atraso do Circuito (Análise de \textit{Timing})}
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=\linewidth]{img/grafo_lista_nivel_logico.pdf} 
-\caption{Na lista ordenada, observando o elemento \textit{u1:o}, os elementos de menor ou de igual  nível lógico (\textit{fonte, inp1, inp2, f1:q, u1:a, u1:b, u2:a}) se encontram à esquerda, e os de maior ou igual (\textit{u2:o, f1:d, out, terminal}) se encontram à direita.}
-\label{fig:grafo_lista_nivel_logico}
-\end{center}
-\end{figure}
-
-O algoritmo de STA é baseado nas técnicas conhecidas como PERT/CPM \cite{BhaskerChadha09}. Para melhorar o desempenho da técnica, foram adotadas estruturas de dados mais otimizadas para armazenar o grafo: ao guardar os dados do grafo em listas ordenadas topologicamente (Figura \ref{fig:grafo_lista_nivel_logico}), o algoritmo passa a ser apenas uma varredura em cada item da lista, atualizando as informações temporais previamente calculadas. Assim, não é mais necessário o uso da fila da técnica PERT/CPM.
+O algoritmo de STA é baseado nas técnicas conhecidas como PERT/CPM \cite{BhaskerChadha09}. Para melhorar o desempenho da técnica, foram adotadas estruturas de dados mais otimizadas para armazenar o grafo: ao guardar os dados do grafo em listas ordenadas topologicamente, o algoritmo passa a ser apenas uma varredura em cada item da lista, atualizando as informações temporais previamente calculadas. Assim, não é mais necessário o uso da fila da técnica PERT/CPM.
 
 \subsection{Validação e Resultados}
 
+A técnica foi validada comparando seus resultados com os fornecidos pela ferramenta industrial Synopsys \textregistered PrimeTime \texttrademark. Os resultados fornecidos pela ferramenta desenvolvida são idênticos aos calculados pela ferramenta industrial, com \textit{runtime} médio cerca de três vezes menor. Os resultados do experimento pode ser visualizado na \autoref{tab:validacao}.
 
+\begin{table}[htbp]
+	\centering
+	\caption{\label{tab:validacao}Resultados obtidos pela ferramenta de análise de \textit{timing} desenvolvida comparados com a ferramenta industrial. Os valores de EMPA iguais a 0 indicam que os resultados calculados são idênticos aos do PrimeTime, ou seja, o erro percentual absoluto é igual a 0\%.}
+	\includegraphics[width=\linewidth]{img/lumped_capacitance_vs_primetime.pdf} 
+	\legend{Produzida pelo autor.}
+\end{table}
 
 % ---
 % Finaliza a parte no bookmark do PDF
@@ -335,7 +356,7 @@ O algoritmo de STA é baseado nas técnicas conhecidas como PERT/CPM \cite{Bhask
 \chapter*[Considerações finais]{Considerações finais}
 \addcontentsline{toc}{chapter}{Considerações finais}
 
-Durante o período de vigência da bolsa, o bolsista avaliou uma técnica de análise de \textit{timing} estática que considera os atrasos das interconexões e os efeito de degradação do \textit{slew} através destas. Para tal, o bolsista implementou uma ferramenta baseada na infraestrutura do ISPD de 2013 \cite{Contest2013} com os algoritmos para cálculos dos atrasos devidamente implementados. No fim da vigência da bolsa, foi também iniciada a incorporação do modelo de grafo e cálculos de atraso em uma técnica de otimização para fluxo industrial, conhecida como \textit{gate sizing}, porém com término previsto para metade do primeiro semestre de 2014.
+Durante o período de vigência da bolsa, o bolsista avaliou uma técnica de análise de \textit{timing} estática que não considera os atrasos das interconexões, baseando-se na estrutura provida pela competição de \textit{gate sizing} do ISPD 2012 \cite{ozdal2012ispd}. Durante a vigência da bolsa, o bolsista auxiliou também no desenvolvimento de três publicações em eventos internacionais, na área de otimização. 
 
 
 
